@@ -2,6 +2,7 @@ package br.com.duxusdesafio.service;
 
 import br.com.duxusdesafio.model.Integrante;
 import br.com.duxusdesafio.model.Time;
+import br.com.duxusdesafio.service.exceptions.ResourceNotFoundException;
 import com.tngtech.java.junit.dataprovider.DataProvider;
 import com.tngtech.java.junit.dataprovider.DataProviderRunner;
 import com.tngtech.java.junit.dataprovider.UseDataProvider;
@@ -31,7 +32,9 @@ public class TesteApiService {
         MockitoAnnotations.openMocks(this);
     }
 
-
+    /**
+     * Teste responsável pelo método `timeDaData`
+     */
     @DataProvider
     public static Object[][] testTimeDaDataParams() {
 
@@ -65,8 +68,19 @@ public class TesteApiService {
         assertEquals(esperado, timeRetornado);
     }
 
+    @Test(expected = ResourceNotFoundException.class)
+    public void timeDaDataShouldThrowResourceNotFoundExceptionWhenTimeIsNotFound() {
+        DadosParaTesteApiService dados = new DadosParaTesteApiService();
 
+        apiService.timeDaData(
+                LocalDate.of(2000, 1, 1),
+                dados.getTodosOsTimes()
+        );
+    }
 
+    /**
+     * Teste responsável pelo método `integranteMaisUsado`
+     */
     @DataProvider
     public static Object[][] testIntegranteMaisUsadoParams() {
 
@@ -84,7 +98,6 @@ public class TesteApiService {
         };
     }
 
-
     @Test
     @UseDataProvider("testIntegranteMaisUsadoParams")
     public void testIntegranteMaisUsado(LocalDate dataInicial, LocalDate dataFinal, List<Time> todosOsTimes, Integrante esperado) {
@@ -94,8 +107,21 @@ public class TesteApiService {
         assertEquals(esperado, integranteRetornado);
     }
 
+    @Test(expected = ResourceNotFoundException.class)
+    public void integranteMaisUsadoShouldThrowResourceNotFoundExceptionWhenIntegranteIsNotFound() {
 
+        DadosParaTesteApiService dados = new DadosParaTesteApiService();
 
+        apiService.integranteMaisUsado(
+                LocalDate.of(2000, 1, 1),
+                LocalDate.of(2001, 1, 1),
+                dados.getTodosOsTimes()
+        );
+    }
+
+    /**
+     * Teste responsável pelo método `timeMaisRecorrente`
+     */
     @DataProvider
     public static Object[][] testTimeMaisRecorrenteParams() {
         DadosParaTesteApiService dadosParaTesteApiService = new DadosParaTesteApiService();
@@ -129,8 +155,20 @@ public class TesteApiService {
         assertEquals(esperado, nomeDosIntegrantesDoTimeMaisRecorrente);
     }
 
+    @Test(expected = ResourceNotFoundException.class)
+    public void integrantesDoTimeMaisRecorrenteShouldThrowResourceNotFoundExceptionWhenTimeIsNotFound() {
+        DadosParaTesteApiService dados = new DadosParaTesteApiService();
 
+        apiService.integrantesDoTimeMaisRecorrente(
+                LocalDate.of(2000, 1, 1),
+                LocalDate.of(2001, 1, 1),
+                dados.getTodosOsTimes()
+        );
+    }
 
+    /**
+     * Teste responsável pelo método `funcaoMaisRecorrente`
+     */
     @DataProvider
     public static Object[][] testFuncaoMaisRecorrenteParams() {
 
@@ -156,6 +194,20 @@ public class TesteApiService {
         assertEquals(esperado, funcaoMaisRecorrente);
     }
 
+    @Test(expected = ResourceNotFoundException.class)
+    public void funcaoMaisRecorrenteShouldThrowResourceNotFoundExceptionWhenFuncaoIsNotFound() {
+        DadosParaTesteApiService dados = new DadosParaTesteApiService();
+
+        apiService.funcaoMaisRecorrente(
+                LocalDate.of(2000, 1, 1),
+                LocalDate.of(2001, 1, 1),
+                dados.getTodosOsTimes()
+        );
+    }
+
+    /**
+     * Teste responsável pelo método `clubeMaisRecorrente`
+     */
     @DataProvider
     public static Object[][] testClubeMaisRecorrenteParams() {
         DadosParaTesteApiService dadosParaTesteApiService = new DadosParaTesteApiService();
@@ -179,6 +231,20 @@ public class TesteApiService {
         assertEquals(esperado, clubeMaisRecorrente);
     }
 
+    @Test(expected = ResourceNotFoundException.class)
+    public void clubeMaisRecorrenteShouldThrowResourceNotFoundExceptionWhenClubeIsNotFound() {
+        DadosParaTesteApiService dados = new DadosParaTesteApiService();
+
+        apiService.clubeMaisRecorrente(
+                LocalDate.of(2000, 1, 1),
+                LocalDate.of(2001, 1, 1),
+                dados.getTodosOsTimes()
+        );
+    }
+
+    /**
+     * Teste responsável pelo método `contagemDeClubesNoPeriodo`
+     */
     @DataProvider
     public static Object[][] testContagemDeClubesParams() {
 
@@ -216,8 +282,9 @@ public class TesteApiService {
         assertEquals(esperado, contagemDeClubesNoPeriodo);
     }
 
-
-
+    /**
+     * Teste responsável pelo método `contagemPorFuncao`
+     */
     @DataProvider
     public static Object[][] testContagemPorFuncaoParams() {
 
