@@ -76,7 +76,8 @@ public class ApiService {
      * Vai retornar o número (quantidade) de aparições de cada Clube participante no período
      */
     public Map<String, Long> contagemDeClubesNoPeriodo(LocalDate dataInicial, LocalDate dataFinal, List<Time> todosOsTimes){
-        return filtrarPorPeriodo(todosOsTimes, dataInicial, dataFinal).collect(Collectors.groupingBy(Time::getNomeDoClube, Collectors.counting()));
+        return filtrarPorPeriodo(todosOsTimes, dataInicial, dataFinal)
+                .collect(Collectors.groupingBy(Time::getNomeDoClube, Collectors.counting()));
     }
 
     /**
@@ -84,8 +85,8 @@ public class ApiService {
      * Dica - pense sobre repetições!
      */
     public Map<String, Long> contagemPorFuncao(LocalDate dataInicial, LocalDate dataFinal, List<Time> todosOsTimes){
-        // TODO Implementar método seguindo as instruções!
-        return null;
+        return integrantesNoPeriodo(todosOsTimes, dataInicial, dataFinal)
+                .distinct().collect(Collectors.groupingBy(Integrante::getFuncao, Collectors.counting()));
     }
 
 
