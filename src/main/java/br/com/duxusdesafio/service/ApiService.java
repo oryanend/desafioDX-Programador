@@ -1,5 +1,6 @@
 package br.com.duxusdesafio.service;
 
+import br.com.duxusdesafio.model.ComposicaoTime;
 import br.com.duxusdesafio.model.Integrante;
 import br.com.duxusdesafio.model.Time;
 import br.com.duxusdesafio.service.exceptions.ResourceNotFoundException;
@@ -8,6 +9,9 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Function;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * Service que possuirá as regras de negócio para o processamento dos dados
@@ -35,8 +39,25 @@ public class ApiService {
      * dentro do período
      */
     public Integrante integranteMaisUsado(LocalDate dataInicial, LocalDate dataFinal, List<Time> todosOsTimes){
-        // TODO Implementar método seguindo as instruções!
-        return null;
+        List<Integrante> integrantes = todosOsTimes.stream()
+                .filter(time -> dentroDoPeriodo(time, dataInicial, dataFinal))
+                .flatMap(time -> time.getComposicaoTime().stream())
+                .map(ComposicaoTime::getIntegrante).collect(Collectors.toList());
+
+        long idMaisUsado = integrantes.stream()
+                .collect(Collectors.groupingBy(Integrante::getId, Collectors.counting()))
+                .entrySet()
+                .stream()
+                .max(Map.Entry.comparingByValue())
+                .map(Map.Entry::getKey)
+                .orElseThrow(() ->
+                        new ResourceNotFoundException("Nenhum integrante encontrado no período informado"));
+
+        return integrantes.stream()
+                .filter(integrante -> integrante.getId() == idMaisUsado)
+                .findFirst()
+                .orElseThrow(() ->
+                        new ResourceNotFoundException("Integrante não encontrado"));
     }
 
     /**
@@ -82,4 +103,8 @@ public class ApiService {
         return null;
     }
 
+
+    private boolean dentroDoPeriodo(Time t, LocalDate ini, LocalDate fim) {
+        return (ini == null || !t.getData().isBefore(ini)) && (fim == null || !t.getData().isAfter(fim));
+    }
 }
