@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Objects;
 
 @Entity
-@Table(name = "integrante")
+@Table(name = "tb_integrante")
 public class Integrante {
 	
 	@Id
