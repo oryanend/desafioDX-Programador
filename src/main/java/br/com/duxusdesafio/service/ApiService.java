@@ -38,58 +38,31 @@ public class ApiService {
      * Vai retornar o integrante que estiver presente na maior quantidade de times
      * dentro do período
      */
-    public Integrante integranteMaisUsado(LocalDate dataInicial, LocalDate dataFinal, List<Time> todosOsTimes){
-        List<Integrante> integrantes = todosOsTimes.stream()
-                .filter(time -> dentroDoPeriodo(time, dataInicial, dataFinal))
-                .flatMap(time -> time.getComposicaoTime().stream())
-                .map(ComposicaoTime::getIntegrante).collect(Collectors.toList());
-
-        long idMaisUsado = integrantes.stream()
-                .collect(Collectors.groupingBy(Integrante::getId, Collectors.counting()))
-                .entrySet()
-                .stream()
-                .max(Map.Entry.comparingByValue())
-                .map(Map.Entry::getKey)
-                .orElseThrow(() ->
-                        new ResourceNotFoundException("Nenhum integrante encontrado no período informado"));
-
-        return integrantes.stream()
-                .filter(integrante -> integrante.getId() == idMaisUsado)
-                .findFirst()
-                .orElseThrow(() ->
-                        new ResourceNotFoundException("Integrante não encontrado"));
+    public Integrante integranteMaisUsado(LocalDate dataInicial, LocalDate dataFinal, List<Time> todosOsTimes) {
+        return maisFrequente(integrantesNoPeriodo(todosOsTimes, dataInicial, dataFinal), "Nenhum integrante encontrado no período informado");
     }
 
     /**
      * Vai retornar uma lista com os nomes dos integrantes do time mais recorrente dentro do período.
      * OBS: Time é o clube + composição em determinada data
      */
-    public List<String> integrantesDoTimeMaisRecorrente(LocalDate dataInicial, LocalDate dataFinal, List<Time> todosOsTimes){
-        List<Time> timesNoPeriodo = todosOsTimes.stream()
-                .filter(time -> dentroDoPeriodo(time, dataInicial, dataFinal))
-                .collect(Collectors.toList());
+    public List<String> integrantesDoTimeMaisRecorrente(LocalDate dataInicial, LocalDate dataFinal, List<Time> todosOsTimes) {
+        List<Time> timesNoPeriodo = filtrarPorPeriodo(todosOsTimes, dataInicial, dataFinal).collect(Collectors.toList());
 
-        String clubeMaisRecorrente = timesNoPeriodo.stream()
-                .collect(Collectors.groupingBy(Time::getNomeDoClube, Collectors.counting()))
-                .entrySet().stream()
-                .max(Map.Entry.comparingByValue())
-                .map(Map.Entry::getKey)
-                .orElseThrow(() -> new ResourceNotFoundException("Nenhum time encontrado no período informado"));
+        String clube = maisFrequente(timesNoPeriodo.stream(), Time::getNomeDoClube, "Nenhum time encontrado no período informado");
 
         return timesNoPeriodo.stream()
-                .filter(time -> time.getNomeDoClube().equals(clubeMaisRecorrente))
-                .flatMap(time -> time.getComposicaoTime().stream())
-                .map(composicao -> composicao.getIntegrante().getNome())
-                .distinct()
-                .collect(Collectors.toList());
+                .filter(t -> t.getNomeDoClube().equals(clube))
+                .flatMap(t -> t.getComposicaoTime().stream())
+                .map(c -> c.getIntegrante().getNome())
+                .distinct().collect(Collectors.toList());
     }
 
     /**
      * Vai retornar a função mais recorrente nos times dentro do período
      */
     public String funcaoMaisRecorrente(LocalDate dataInicial, LocalDate dataFinal, List<Time> todosOsTimes){
-        // TODO Implementar método seguindo as instruções!
-        return null;
+        return maisFrequente(integrantesNoPeriodo(todosOsTimes, dataInicial, dataFinal), Integrante::getFuncao, "Nenhuma função encontrada no período informado");
     }
 
     /**
@@ -99,7 +72,6 @@ public class ApiService {
         // TODO Implementar método seguindo as instruções!
         return null;
     }
-
 
     /**
      * Vai retornar o número (quantidade) de aparições de cada Clube participante no período
@@ -119,7 +91,35 @@ public class ApiService {
     }
 
 
-    private boolean dentroDoPeriodo(Time t, LocalDate ini, LocalDate fim) {
-        return (ini == null || !t.getData().isBefore(ini)) && (fim == null || !t.getData().isAfter(fim));
+    // Métodos Reutilizáveis
+    /** Times cuja data está dentro de [dataInicial, dataFinal]; nulos = sem limite. */
+    private Stream<Time> filtrarPorPeriodo(List<Time> listaTodosTimes, LocalDate dataInicial, LocalDate dataFinal) {
+        return listaTodosTimes.stream()
+                .filter(time -> (dataInicial == null || !time.getData().isBefore(dataInicial)) && (dataFinal == null || !time.getData().isAfter(dataFinal)));
     }
+
+    /**
+     * Todos os integrantes dos times no período, com repetições.
+     */
+    private Stream<Integrante> integrantesNoPeriodo(List<Time> listaTodosTimes, LocalDate dataInicial, LocalDate dataFinal) {
+        return filtrarPorPeriodo(listaTodosTimes, dataInicial, dataFinal)
+                .flatMap(time -> time.getComposicaoTime().stream())
+                .map(ComposicaoTime::getIntegrante);
+    }
+
+    /** Elemento mais frequente num stream de valores; lança exceção se vazio. */
+    private <K> K maisFrequente(Stream<K> stream, String exceptionMessage) {
+        return stream
+                .collect(Collectors.groupingBy(Function.identity(), Collectors.counting()))
+                .entrySet().stream()
+                .max(Map.Entry.comparingByValue())
+                .map(Map.Entry::getKey)
+                .orElseThrow(() -> new ResourceNotFoundException(exceptionMessage));
+    }
+
+    /** Variante: extrai uma chave antes de calcular a frequência. */
+    private <T, K> K maisFrequente(Stream<T> stream, Function<T, K> key, String exceptionMessage) {
+        return maisFrequente(stream.map(key), exceptionMessage);
+    }
+
 }
