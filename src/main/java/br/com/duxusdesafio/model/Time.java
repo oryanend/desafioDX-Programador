@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Objects;
 
 @Entity
-@Table(name = "time")
+@Table(name = "tb_time")
 public class Time {
 
 	@Id

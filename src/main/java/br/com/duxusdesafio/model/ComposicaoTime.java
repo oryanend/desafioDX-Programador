@@ -6,7 +6,7 @@ import java.util.Objects;
 
 
 @Entity
-@Table(name = "composicao_time")
+@Table(name = "tb_composicao_time")
 public class ComposicaoTime {
 	
 	@Id
