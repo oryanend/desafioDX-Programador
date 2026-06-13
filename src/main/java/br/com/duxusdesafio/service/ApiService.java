@@ -69,8 +69,7 @@ public class ApiService {
      * Vai retornar o nome do Clube mais comum dentro do período
      */
     public String clubeMaisRecorrente(LocalDate dataInicial, LocalDate dataFinal, List<Time> todosOsTimes) {
-        // TODO Implementar método seguindo as instruções!
-        return null;
+        return maisFrequente(filtrarPorPeriodo(todosOsTimes, dataInicial, dataFinal), Time::getNomeDoClube, "Nenhum clube encontrado no período informado");
     }
 
     /**
