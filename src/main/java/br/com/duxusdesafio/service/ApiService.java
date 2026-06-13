@@ -65,8 +65,23 @@ public class ApiService {
      * OBS: Time é o clube + composição em determinada data
      */
     public List<String> integrantesDoTimeMaisRecorrente(LocalDate dataInicial, LocalDate dataFinal, List<Time> todosOsTimes){
-        // TODO Implementar método seguindo as instruções!
-        return null;
+        List<Time> timesNoPeriodo = todosOsTimes.stream()
+                .filter(time -> dentroDoPeriodo(time, dataInicial, dataFinal))
+                .collect(Collectors.toList());
+
+        String clubeMaisRecorrente = timesNoPeriodo.stream()
+                .collect(Collectors.groupingBy(Time::getNomeDoClube, Collectors.counting()))
+                .entrySet().stream()
+                .max(Map.Entry.comparingByValue())
+                .map(Map.Entry::getKey)
+                .orElseThrow(() -> new ResourceNotFoundException("Nenhum time encontrado no período informado"));
+
+        return timesNoPeriodo.stream()
+                .filter(time -> time.getNomeDoClube().equals(clubeMaisRecorrente))
+                .flatMap(time -> time.getComposicaoTime().stream())
+                .map(composicao -> composicao.getIntegrante().getNome())
+                .distinct()
+                .collect(Collectors.toList());
     }
 
     /**
