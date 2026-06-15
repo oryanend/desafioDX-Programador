@@ -4,7 +4,6 @@ import br.com.duxusdesafio.DTO.ClubeMaisRecorrenteDTO;
 import br.com.duxusdesafio.DTO.FuncaoMaisRecorrenteDTO;
 import br.com.duxusdesafio.DTO.IntegranteDTO;
 import br.com.duxusdesafio.DTO.TimeDaDataDTO;
-import br.com.duxusdesafio.model.Integrante;
 import br.com.duxusdesafio.model.Time;
 import br.com.duxusdesafio.repositories.TimeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class ApiProcessingService {
@@ -47,4 +47,11 @@ public class ApiProcessingService {
     public ClubeMaisRecorrenteDTO clubeMaisRecorrente(LocalDate dataInicial, LocalDate dataFinal){
         return new ClubeMaisRecorrenteDTO(apiService.clubeMaisRecorrente(dataInicial, dataFinal, timeRepository.findAll()));
     }
+
+    @Transactional(readOnly = true)
+    public Map<String, Long> contagemDeClubesNoPeriodo(LocalDate dataInicial, LocalDate dataFinal){
+        return apiService.contagemDeClubesNoPeriodo(dataInicial, dataFinal, timeRepository.findAll());
+    }
+
+
 }

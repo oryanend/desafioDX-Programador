@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/v1")
@@ -67,5 +68,15 @@ public class ApiController {
             @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate dataFinal)
     {
         return ResponseEntity.ok().body(service.clubeMaisRecorrente(dataInicial, dataFinal));
+    }
+
+    @GetMapping("/contagem-clubes")
+    public ResponseEntity<Map<String, Long>> contagemDeClubesNoPeriodo(
+            @RequestParam(required = false, name = "data-inicial")
+            @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate dataInicial,
+            @RequestParam(required = false, name = "data-final")
+            @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate dataFinal)
+    {
+        return ResponseEntity.ok().body(service.contagemDeClubesNoPeriodo(dataInicial, dataFinal));
     }
 }

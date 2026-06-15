@@ -21,7 +21,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static br.com.duxusdesafio.factory.IntegranteFactory.createIntegrante;
 import static br.com.duxusdesafio.factory.TimeFactory.createTimeDaDataDTO;
@@ -45,10 +47,12 @@ public class ApiControllerTest {
 
     private LocalDate existingData;
     private LocalDate nonExistingData;
+    private LocalDate validDataInicial, validDataFinal;
 
     private IntegranteDTO validIntegranteDTO;
 
     private List<String> validIntegrantesDoTimeMaisRecorrente;
+    private Map<String, Long> validContagemDeClubesNoPeriodo;
 
     private FuncaoMaisRecorrenteDTO funcaoMaisRecorrenteDTO;
     private ClubeMaisRecorrenteDTO clubeMaisRecorrenteDTO;
@@ -61,9 +65,16 @@ public class ApiControllerTest {
 
         existingData = validTimeDaDataDTO.getData();
         nonExistingData = LocalDate.of(2020, 1, 1);
+        validDataInicial = LocalDate.of(2021, 1, 1);
+        validDataFinal = LocalDate.of(2021, 12, 31);
 
         validIntegranteDTO = new IntegranteDTO(createIntegrante());
         validIntegrantesDoTimeMaisRecorrente = Arrays.asList("Integrante 1", "Integrante 2", "Integrante 3");
+
+        validContagemDeClubesNoPeriodo = new HashMap<>();
+        validContagemDeClubesNoPeriodo.put("Santos", 5L);
+        validContagemDeClubesNoPeriodo.put("Palmeiras", 3L);
+        validContagemDeClubesNoPeriodo.put("Corinthians", 2L);
     }
 
     /**
@@ -257,5 +268,25 @@ public class ApiControllerTest {
 
         verify(service).clubeMaisRecorrente(nonExistingData, nonExistingData);
     }
+
+    /**
+     * Testes sobre o endpoint GET `/api/v1/contagem-clubes`
+     */
+    @Test
+    public void getContagemDeClubesNoPeriodoShouldReturnContagemDeClubes() throws Exception {
+        when(service.contagemDeClubesNoPeriodo(validDataInicial, validDataFinal)).thenReturn(validContagemDeClubesNoPeriodo);
+
+        mockMvc.perform(get("/api/v1/contagem-clubes")
+                        .param("data-inicial", validDataInicial.toString())
+                        .param("data-final", validDataFinal.toString()))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$").isMap())
+                .andExpect(jsonPath("$.Santos").value(validContagemDeClubesNoPeriodo.get("Santos").intValue()))
+                .andExpect(jsonPath("$.Palmeiras").value(validContagemDeClubesNoPeriodo.get("Palmeiras").intValue()))
+                .andExpect(jsonPath("$.Corinthians").value(validContagemDeClubesNoPeriodo.get("Corinthians").intValue()));
+
+        verify(service).contagemDeClubesNoPeriodo(validDataInicial, validDataFinal);
+    }
+
 
 }
