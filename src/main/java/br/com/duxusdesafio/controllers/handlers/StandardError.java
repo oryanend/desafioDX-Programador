@@ -1,4 +1,4 @@
-package br.com.duxusdesafio.handlers;
+package br.com.duxusdesafio.controllers.handlers;
 
 import java.time.Instant;
 
