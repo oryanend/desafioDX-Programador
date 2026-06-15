@@ -1,5 +1,6 @@
 package br.com.duxusdesafio.controllers;
 
+import br.com.duxusdesafio.DTO.ClubeMaisRecorrenteDTO;
 import br.com.duxusdesafio.DTO.FuncaoMaisRecorrenteDTO;
 import br.com.duxusdesafio.DTO.IntegranteDTO;
 import br.com.duxusdesafio.DTO.TimeDaDataDTO;
@@ -56,5 +57,15 @@ public class ApiController {
             @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate dataFinal)
     {
         return ResponseEntity.ok().body(service.funcaoMaisRecorrente(dataInicial, dataFinal));
+    }
+
+    @GetMapping("/clube-mais-recorrente")
+    public ResponseEntity<ClubeMaisRecorrenteDTO> clubeMaisRecorrente(
+            @RequestParam(required = false, name = "data-inicial")
+            @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate dataInicial,
+            @RequestParam(required = false, name = "data-final")
+            @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate dataFinal)
+    {
+        return ResponseEntity.ok().body(service.clubeMaisRecorrente(dataInicial, dataFinal));
     }
 }

@@ -1,5 +1,6 @@
 package br.com.duxusdesafio.controllers;
 
+import br.com.duxusdesafio.DTO.ClubeMaisRecorrenteDTO;
 import br.com.duxusdesafio.DTO.FuncaoMaisRecorrenteDTO;
 import br.com.duxusdesafio.DTO.IntegranteDTO;
 import br.com.duxusdesafio.DTO.TimeDaDataDTO;
@@ -50,11 +51,13 @@ public class ApiControllerTest {
     private List<String> validIntegrantesDoTimeMaisRecorrente;
 
     private FuncaoMaisRecorrenteDTO funcaoMaisRecorrenteDTO;
+    private ClubeMaisRecorrenteDTO clubeMaisRecorrenteDTO;
 
     @Before
     public void setUp() throws Exception {
         validTimeDaDataDTO = createTimeDaDataDTO();
         funcaoMaisRecorrenteDTO = new FuncaoMaisRecorrenteDTO("Atacante");
+        clubeMaisRecorrenteDTO = new ClubeMaisRecorrenteDTO(validTimeDaDataDTO.getClube());
 
         existingData = validTimeDaDataDTO.getData();
         nonExistingData = LocalDate.of(2020, 1, 1);
@@ -221,4 +224,38 @@ public class ApiControllerTest {
 
         verify(service).funcaoMaisRecorrente(nonExistingData, nonExistingData);
     }
+
+    /**
+     * Testes sobre o endpoint GET `/api/v1/clube-mais-recorrente`
+     */
+    @Test
+    public void getClubeMaisRecorrenteShouldReturnNomeDoClubeMaisRecorrente() throws Exception {
+        when(service.clubeMaisRecorrente(existingData, existingData))
+                .thenReturn(clubeMaisRecorrenteDTO);
+
+        mockMvc.perform(get("/api/v1/clube-mais-recorrente")
+                        .param("data-inicial", existingData.toString())
+                        .param("data-final", existingData.toString()))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.nomeDoClube").value(clubeMaisRecorrenteDTO.getNomeDoClube()));
+
+        verify(service).clubeMaisRecorrente(existingData, existingData);
+    }
+
+    @Test
+    public void getClubeMaisRecorrenteShouldReturnResourceNotFoundWhenClubeIsNotFoundBetweenDataInicialAndDataFinal() throws Exception {
+        when(service.clubeMaisRecorrente(nonExistingData, nonExistingData)).thenThrow(new ResourceNotFoundException("Nenhum clube encontrado no período informado"));
+
+        mockMvc.perform(get("/api/v1/clube-mais-recorrente")
+                        .param("data-inicial", nonExistingData.toString())
+                        .param("data-final", nonExistingData.toString()))
+                .andExpect(status().isNotFound())
+                .andExpect(jsonPath("$.message").value("Nenhum clube encontrado no período informado"))
+                .andExpect(jsonPath("$.error").value("Resource not found"))
+                .andExpect(jsonPath("$.timestamp").isNotEmpty())
+                .andExpect(jsonPath("$.path").isNotEmpty());
+
+        verify(service).clubeMaisRecorrente(nonExistingData, nonExistingData);
+    }
+
 }

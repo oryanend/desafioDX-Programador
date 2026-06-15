@@ -1,5 +1,6 @@
 package br.com.duxusdesafio.service;
 
+import br.com.duxusdesafio.DTO.ClubeMaisRecorrenteDTO;
 import br.com.duxusdesafio.DTO.FuncaoMaisRecorrenteDTO;
 import br.com.duxusdesafio.DTO.IntegranteDTO;
 import br.com.duxusdesafio.DTO.TimeDaDataDTO;
@@ -40,5 +41,10 @@ public class ApiProcessingService {
     @Transactional(readOnly = true)
     public FuncaoMaisRecorrenteDTO funcaoMaisRecorrente(LocalDate dataInicial, LocalDate dataFinal){
         return new FuncaoMaisRecorrenteDTO(apiService.funcaoMaisRecorrente(dataInicial, dataFinal, timeRepository.findAll()));
+    }
+
+    @Transactional(readOnly = true)
+    public ClubeMaisRecorrenteDTO clubeMaisRecorrente(LocalDate dataInicial, LocalDate dataFinal){
+        return new ClubeMaisRecorrenteDTO(apiService.clubeMaisRecorrente(dataInicial, dataFinal, timeRepository.findAll()));
     }
 }
