@@ -1,5 +1,6 @@
 package br.com.duxusdesafio.controllers;
 
+import br.com.duxusdesafio.DTO.IntegranteDTO;
 import br.com.duxusdesafio.DTO.TimeDaDataDTO;
 import br.com.duxusdesafio.controllers.handlers.ControllerExceptionHandler;
 import br.com.duxusdesafio.service.ApiProcessingService;
@@ -17,9 +18,9 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.Instant;
 import java.time.LocalDate;
 
+import static br.com.duxusdesafio.factory.IntegranteFactory.createIntegrante;
 import static br.com.duxusdesafio.factory.TimeFactory.createTimeDaDataDTO;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -43,12 +44,16 @@ public class ApiControllerTest {
     private LocalDate existingData;
     private LocalDate nonExistingData;
 
+    private IntegranteDTO validIntegranteDTO;
+
     @Before
     public void setUp() throws Exception {
         validTimeDaDataDTO = createTimeDaDataDTO();
 
         existingData = validTimeDaDataDTO.getData();
         nonExistingData = LocalDate.of(2020, 1, 1);
+
+        validIntegranteDTO = new IntegranteDTO(createIntegrante());
     }
 
     @Test
@@ -80,4 +85,52 @@ public class ApiControllerTest {
         verify(service).timeDaData(nonExistingData);
     }
 
+
+    @Test
+    public void getIntegranteMaisUsadoShouldReturnIntegranteMaisUsadoWhenExistingData() throws Exception {
+        when(service.integranteMaisUsado(existingData, existingData)).thenReturn(validIntegranteDTO);
+
+        mockMvc.perform(get("/api/v1/integrante-mais-usado")
+                        .param("data-inicial", existingData.toString())
+                        .param("data-final", existingData.toString()))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id").value(validIntegranteDTO.getId()))
+                .andExpect(jsonPath("$.nome").value(validIntegranteDTO.getNome()))
+                .andExpect(jsonPath("$.funcao").value(validIntegranteDTO.getFuncao()))
+        ;
+    }
+
+    @Test
+    public void getIntegranteMaisUsadoShouldReturnIntegranteMaisUsadoWhenDataInicialAndDataFinalIsNull() throws Exception {
+        when(service.integranteMaisUsado(null, null)).thenReturn(validIntegranteDTO);
+
+        mockMvc.perform(get("/api/v1/integrante-mais-usado"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id").value(validIntegranteDTO.getId()))
+                .andExpect(jsonPath("$.nome").value(validIntegranteDTO.getNome()))
+                .andExpect(jsonPath("$.funcao").value(validIntegranteDTO.getFuncao()))
+        ;
+    }
+
+    @Test
+    public void getIntegranteMaisUsadoShouldReturnResourceNotFoundWhenIntegranteIsNotFound() throws Exception {
+        when(service.integranteMaisUsado(existingData, existingData)).thenThrow(new ResourceNotFoundException("Integrante mais usado não encontrado para o período: " + existingData + " a " + existingData));
+
+        mockMvc.perform(get("/api/v1/integrante-mais-usado")
+                        .param("data-inicial", existingData.toString())
+                        .param("data-final", existingData.toString()))
+                .andExpect(status().isNotFound())
+                .andExpect(jsonPath("$.message").value("Integrante mais usado não encontrado para o período: " + existingData + " a " + existingData))
+                .andExpect(jsonPath("$.error").value("Resource not found"))
+                .andExpect(jsonPath("$.timestamp").isNotEmpty())
+                .andExpect(jsonPath("$.path").isNotEmpty())
+        ;
+
+        verify(service).integranteMaisUsado(existingData, existingData);
+    }
+
+
+    @Test
+    public void name() {
+    }
 }

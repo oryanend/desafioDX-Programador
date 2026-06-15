@@ -1,5 +1,6 @@
 package br.com.duxusdesafio.controllers;
 
+import br.com.duxusdesafio.DTO.IntegranteDTO;
 import br.com.duxusdesafio.DTO.TimeDaDataDTO;
 import br.com.duxusdesafio.service.ApiProcessingService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,4 +25,16 @@ public class ApiController {
     {
         return ResponseEntity.ok(service.timeDaData(data));
     }
+
+    @GetMapping("/integrante-mais-usado")
+    public ResponseEntity<IntegranteDTO> integranteMaisUsado(
+            @RequestParam(required = false, name = "data-inicial")
+            @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate dataInicial,
+            @RequestParam(required = false, name = "data-final")
+            @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate dataFinal)
+    {
+        return ResponseEntity.ok(service.integranteMaisUsado(dataInicial, dataFinal));
+    }
+
+
 }
