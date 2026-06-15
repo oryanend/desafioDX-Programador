@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Service
 public class ApiProcessingService {
@@ -28,5 +29,10 @@ public class ApiProcessingService {
     @Transactional(readOnly = true)
     public IntegranteDTO integranteMaisUsado(LocalDate dataInicial, LocalDate dataFinal){
         return new IntegranteDTO(apiService.integranteMaisUsado(dataInicial, dataFinal, timeRepository.findAll()));
+    }
+
+    @Transactional(readOnly = true)
+    public List<String> integrantesDoTimeMaisRecorrente(LocalDate dataInicial, LocalDate dataFinal){
+        return apiService.integrantesDoTimeMaisRecorrente(dataInicial, dataFinal, timeRepository.findAll());
     }
 }

@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1")
@@ -36,5 +37,13 @@ public class ApiController {
         return ResponseEntity.ok(service.integranteMaisUsado(dataInicial, dataFinal));
     }
 
-
+    @GetMapping("/integrantes-time-mais-recorrente")
+    public ResponseEntity<List<String>> integrantesDoTimeMaisRecorrente(
+            @RequestParam(required = false, name = "data-inicial")
+            @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate dataInicial,
+            @RequestParam(required = false, name = "data-final")
+            @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate dataFinal)
+    {
+        return ResponseEntity.ok(service.integrantesDoTimeMaisRecorrente(dataInicial, dataFinal));
+    }
 }
