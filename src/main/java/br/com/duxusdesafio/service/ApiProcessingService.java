@@ -53,5 +53,8 @@ public class ApiProcessingService {
         return apiService.contagemDeClubesNoPeriodo(dataInicial, dataFinal, timeRepository.findAll());
     }
 
-
+    @Transactional(readOnly = true)
+    public Map<String, Long> contagemPorFuncao(LocalDate dataInicial, LocalDate dataFinal){
+        return apiService.contagemPorFuncao(dataInicial, dataFinal, timeRepository.findAll());
+    }
 }

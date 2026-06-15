@@ -53,6 +53,7 @@ public class ApiControllerTest {
 
     private List<String> validIntegrantesDoTimeMaisRecorrente;
     private Map<String, Long> validContagemDeClubesNoPeriodo;
+    private Map<String, Long> validContagemPorFuncao;
 
     private FuncaoMaisRecorrenteDTO funcaoMaisRecorrenteDTO;
     private ClubeMaisRecorrenteDTO clubeMaisRecorrenteDTO;
@@ -75,6 +76,11 @@ public class ApiControllerTest {
         validContagemDeClubesNoPeriodo.put("Santos", 5L);
         validContagemDeClubesNoPeriodo.put("Palmeiras", 3L);
         validContagemDeClubesNoPeriodo.put("Corinthians", 2L);
+
+        validContagemPorFuncao = new HashMap<>();
+        validContagemPorFuncao.put("Atacante", 10L);
+        validContagemPorFuncao.put("Defensor", 7L);
+        validContagemPorFuncao.put("Goleiro", 5L);
     }
 
     /**
@@ -288,5 +294,22 @@ public class ApiControllerTest {
         verify(service).contagemDeClubesNoPeriodo(validDataInicial, validDataFinal);
     }
 
+    /**
+     * Testes sobre o endpoint GET `/api/v1/contagem-funcao`
+     */
+    @Test
+    public void getContagemPorFuncaoShouldReturnContagemPorFuncao() throws Exception {
+        when(service.contagemPorFuncao(validDataInicial, validDataFinal)).thenReturn(validContagemPorFuncao);
 
+        mockMvc.perform(get("/api/v1/contagem-funcao")
+                        .param("data-inicial", validDataInicial.toString())
+                        .param("data-final", validDataFinal.toString()))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$").isMap())
+                .andExpect(jsonPath("$.Atacante").value(validContagemPorFuncao.get("Atacante").intValue()))
+                .andExpect(jsonPath("$.Defensor").value(validContagemPorFuncao.get("Defensor").intValue()))
+                .andExpect(jsonPath("$.Goleiro").value(validContagemPorFuncao.get("Goleiro").intValue()));
+
+        verify(service).contagemPorFuncao(validDataInicial, validDataFinal);
+    }
 }

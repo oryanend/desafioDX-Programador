@@ -79,4 +79,14 @@ public class ApiController {
     {
         return ResponseEntity.ok().body(service.contagemDeClubesNoPeriodo(dataInicial, dataFinal));
     }
+
+    @GetMapping("/contagem-funcao")
+    public ResponseEntity<Map<String, Long>> contagemPorFuncao(
+            @RequestParam(required = false, name = "data-inicial")
+            @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate dataInicial,
+            @RequestParam(required = false, name = "data-final")
+            @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate dataFinal)
+    {
+        return ResponseEntity.ok().body(service.contagemPorFuncao(dataInicial, dataFinal));
+    }
 }
