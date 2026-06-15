@@ -1,11 +1,11 @@
 package br.com.duxusdesafio.controllers;
 
+import br.com.duxusdesafio.DTO.FuncaoMaisRecorrenteDTO;
 import br.com.duxusdesafio.DTO.IntegranteDTO;
 import br.com.duxusdesafio.DTO.TimeDaDataDTO;
 import br.com.duxusdesafio.controllers.handlers.ControllerExceptionHandler;
 import br.com.duxusdesafio.service.ApiProcessingService;
 import br.com.duxusdesafio.service.exceptions.ResourceNotFoundException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -27,8 +27,7 @@ import static br.com.duxusdesafio.factory.TimeFactory.createTimeDaDataDTO;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -42,6 +41,7 @@ public class ApiControllerTest {
 
     private TimeDaDataDTO validTimeDaDataDTO;
 
+
     private LocalDate existingData;
     private LocalDate nonExistingData;
 
@@ -49,9 +49,12 @@ public class ApiControllerTest {
 
     private List<String> validIntegrantesDoTimeMaisRecorrente;
 
+    private FuncaoMaisRecorrenteDTO funcaoMaisRecorrenteDTO;
+
     @Before
     public void setUp() throws Exception {
         validTimeDaDataDTO = createTimeDaDataDTO();
+        funcaoMaisRecorrenteDTO = new FuncaoMaisRecorrenteDTO("Atacante");
 
         existingData = validTimeDaDataDTO.getData();
         nonExistingData = LocalDate.of(2020, 1, 1);
@@ -186,4 +189,36 @@ public class ApiControllerTest {
         verify(service).integrantesDoTimeMaisRecorrente(nonExistingData, nonExistingData);
     }
 
+    /**
+     * Testes sobre o endpoint GET `/api/v1/funcao-mais-recorrente`
+     */
+    @Test
+    public void getFuncaoMaisRecorrenteShouldReturnFuncao() throws Exception {
+        when(service.funcaoMaisRecorrente(existingData, existingData))
+                .thenReturn(funcaoMaisRecorrenteDTO);
+
+        mockMvc.perform(get("/api/v1/funcao-mais-recorrente")
+                        .param("data-inicial", existingData.toString())
+                        .param("data-final", existingData.toString()))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.funcao").value(funcaoMaisRecorrenteDTO.getFuncao()));
+
+        verify(service).funcaoMaisRecorrente(existingData, existingData);
+    }
+
+    @Test
+    public void getFuncaoMaisRecorrenteShouldReturnResourceNotFoundWhenFuncaoIsNotFoundBetweenDataInicialAndDataFinal() throws Exception {
+        when(service.funcaoMaisRecorrente(nonExistingData, nonExistingData)).thenThrow(new ResourceNotFoundException("Nenhuma função encontrada no período informado"));
+
+        mockMvc.perform(get("/api/v1/funcao-mais-recorrente")
+                        .param("data-inicial", nonExistingData.toString())
+                        .param("data-final", nonExistingData.toString()))
+                .andExpect(status().isNotFound())
+                .andExpect(jsonPath("$.message").value("Nenhuma função encontrada no período informado"))
+                .andExpect(jsonPath("$.error").value("Resource not found"))
+                .andExpect(jsonPath("$.timestamp").isNotEmpty())
+                .andExpect(jsonPath("$.path").isNotEmpty());
+
+        verify(service).funcaoMaisRecorrente(nonExistingData, nonExistingData);
+    }
 }

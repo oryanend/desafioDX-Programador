@@ -1,5 +1,6 @@
 package br.com.duxusdesafio.controllers;
 
+import br.com.duxusdesafio.DTO.FuncaoMaisRecorrenteDTO;
 import br.com.duxusdesafio.DTO.IntegranteDTO;
 import br.com.duxusdesafio.DTO.TimeDaDataDTO;
 import br.com.duxusdesafio.service.ApiProcessingService;
@@ -24,7 +25,7 @@ public class ApiController {
             @RequestParam("data")
             @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate data)
     {
-        return ResponseEntity.ok(service.timeDaData(data));
+        return ResponseEntity.ok().body(service.timeDaData(data));
     }
 
     @GetMapping("/integrante-mais-usado")
@@ -34,7 +35,7 @@ public class ApiController {
             @RequestParam(required = false, name = "data-final")
             @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate dataFinal)
     {
-        return ResponseEntity.ok(service.integranteMaisUsado(dataInicial, dataFinal));
+        return ResponseEntity.ok().body(service.integranteMaisUsado(dataInicial, dataFinal));
     }
 
     @GetMapping("/integrantes-time-mais-recorrente")
@@ -44,6 +45,16 @@ public class ApiController {
             @RequestParam(required = false, name = "data-final")
             @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate dataFinal)
     {
-        return ResponseEntity.ok(service.integrantesDoTimeMaisRecorrente(dataInicial, dataFinal));
+        return ResponseEntity.ok().body(service.integrantesDoTimeMaisRecorrente(dataInicial, dataFinal));
+    }
+
+    @GetMapping("/funcao-mais-recorrente")
+    public ResponseEntity<FuncaoMaisRecorrenteDTO> funcaoMaisRecorrente(
+            @RequestParam(required = false, name = "data-inicial")
+            @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate dataInicial,
+            @RequestParam(required = false, name = "data-final")
+            @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate dataFinal)
+    {
+        return ResponseEntity.ok().body(service.funcaoMaisRecorrente(dataInicial, dataFinal));
     }
 }
