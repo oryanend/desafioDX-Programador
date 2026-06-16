@@ -295,6 +295,8 @@ Esta é a forma mais simples de executar o projeto.
 ```bash
 npm run services:up
 ```
+- Caso o docker não consiga iniciar o container dado algum erro, utilize o comando `npm run services:up` novamente e verifique se Docker Desktop está aberto e funcionando corretamente.
+
 > **Observações** 
 > - Caso você queira pausar os serviços mantendo o container, utilize o comando `npm run services:stop`.
 > - Caso pausar os serviços e remover os containers, utilize `npm run services:down`.
