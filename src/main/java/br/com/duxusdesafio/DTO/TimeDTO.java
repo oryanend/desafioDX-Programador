@@ -11,7 +11,8 @@ public class TimeDTO {
     private long id;
     private String nomeDoClube;
     private LocalDate data;
-    private List<Long> integrantesIds;
+
+    private List<Long> integrantesIds = new ArrayList<>();
 
     public TimeDTO() {
     }

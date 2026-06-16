@@ -13,4 +13,9 @@ public class FuncaoMaisRecorrenteDTO {
     public String getFuncao() {
         return funcao;
     }
+
+    @Override
+    public String toString() {
+        return "Função Mais Recorrente: " + funcao;
+    }
 }

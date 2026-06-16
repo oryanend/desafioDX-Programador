@@ -39,4 +39,14 @@ public class TimeDaDataDTO {
     public List<String> getIntegrantes() {
         return integrantes;
     }
+
+    @Override
+    public String toString() {
+        return String.format(
+                "Data: %s%nClube: %s%nIntegrantes: %s",
+                data,
+                clube,
+                integrantes
+        );
+    }
 }

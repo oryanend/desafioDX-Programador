@@ -1,0 +1,269 @@
+{
+  "info": {
+    "_postman_id": "2aae52c0-e20c-43dd-9542-869947f69929",
+    "name": "Desafio de Desenvolvimento Élin Duxus",
+    "description": "# Guia de Uso\n\nOrdem recomendada para execução das requisições:\n\n### 1\\. POST - Inserir Integrante\n\nCadastre um ou mais integrantes no sistema, informando o nome e a função no corpo da requisição conforme o modelo definido.\n\n### 2\\. POST - Inserir Time\n\nCadastre um time informando:\n\n- `nomeDoClube`\n    \n- `data`\n    \n- `integrantesIds` (IDs dos integrantes previamente cadastrados)\n    \n\n### 3\\. Consultas (GET)\n\nApós cadastrar os dados, utilize qualquer um dos endpoints abaixo:\n\n- **GET** **`timeDaData`**: retorna o time associado à data informada no parâmetro `data`.\n    \n- **GET** **`integranteMaisUsado`**: retorna o integrante que mais participou de times no período informado.\n    \n- **GET** **`integrantesTimeMaisRecorrente`**: retorna os integrantes do time que mais se repetiu no período.\n    \n- **GET** **`funcaoMaisRecorrente`**: retorna a função mais recorrente entre os integrantes dos times no período.\n    \n- **GET** **`clubeMaisRecorrente`**: retorna o clube que mais apareceu no período.\n    \n- **GET** **`contagemDeClubesNoPeriodo`**: retorna a quantidade de participações de cada clube no período.\n    \n- **GET** **`contagemPorFuncao`**: retorna a quantidade de ocorrências de cada função no período.\n    \n\n> **Observação:** Os parâmetros `data-inicial` e `data-final` são opcionais nos endpoints que realizam consultas por período. Quando não informados, toda a base de dados será considerada. \n  \n> Todas as datas devem seguir o formato **YYYY-MM-DD**.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "41409954"
+  },
+  "item": [
+    {
+      "name": "Inserir Integrante",
+      "request": {
+        "auth": {
+          "type": "noauth"
+        },
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"nome\": \"Neymar Jr.\",\r\n    \"funcao\": \"Atacante\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{host}}/api/v1/integrantes",
+          "host": [
+            "{{host}}"
+          ],
+          "path": [
+            "api",
+            "v1",
+            "integrantes"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Inserir Time",
+      "request": {
+        "auth": {
+          "type": "noauth"
+        },
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n  \"nomeDoClube\": \"Santos\",\r\n  \"data\": \"2026-06-17\",\r\n  \"integrantesIds\": [1]\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{host}}/api/v1/times",
+          "host": [
+            "{{host}}"
+          ],
+          "path": [
+            "api",
+            "v1",
+            "times"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "timeDaData",
+      "request": {
+        "auth": {
+          "type": "noauth"
+        },
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{host}}/api/v1/time-da-data?data=2026-06-17",
+          "host": [
+            "{{host}}"
+          ],
+          "path": [
+            "api",
+            "v1",
+            "time-da-data"
+          ],
+          "query": [
+            {
+              "key": "data",
+              "value": "2026-06-17"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "integranteMaisUsado",
+      "request": {
+        "auth": {
+          "type": "noauth"
+        },
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{host}}/api/v1/integrante-mais-usado?data-inicial=2026-06-17",
+          "host": [
+            "{{host}}"
+          ],
+          "path": [
+            "api",
+            "v1",
+            "integrante-mais-usado"
+          ],
+          "query": [
+            {
+              "key": "data-inicial",
+              "value": "2026-06-17"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "integrantesTimeMaisRecorrente",
+      "request": {
+        "auth": {
+          "type": "noauth"
+        },
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{host}}/api/v1/integrantes-time-mais-recorrente?data-inicial=2026-06-17",
+          "host": [
+            "{{host}}"
+          ],
+          "path": [
+            "api",
+            "v1",
+            "integrantes-time-mais-recorrente"
+          ],
+          "query": [
+            {
+              "key": "data-inicial",
+              "value": "2026-06-17"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "funcaoMaisRecorrente",
+      "request": {
+        "auth": {
+          "type": "noauth"
+        },
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{host}}/api/v1/funcao-mais-recorrente?data-inicial=2026-06-17",
+          "host": [
+            "{{host}}"
+          ],
+          "path": [
+            "api",
+            "v1",
+            "funcao-mais-recorrente"
+          ],
+          "query": [
+            {
+              "key": "data-inicial",
+              "value": "2026-06-17"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "clubeMaisRecorrente",
+      "request": {
+        "auth": {
+          "type": "noauth"
+        },
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{host}}/api/v1/clube-mais-recorrente?data-inicial=2026-06-17",
+          "host": [
+            "{{host}}"
+          ],
+          "path": [
+            "api",
+            "v1",
+            "clube-mais-recorrente"
+          ],
+          "query": [
+            {
+              "key": "data-inicial",
+              "value": "2026-06-17"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "contagemDeClubesNoPeriodo",
+      "request": {
+        "auth": {
+          "type": "noauth"
+        },
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{host}}/api/v1/contagem-clubes?data-inicial=2026-06-17",
+          "host": [
+            "{{host}}"
+          ],
+          "path": [
+            "api",
+            "v1",
+            "contagem-clubes"
+          ],
+          "query": [
+            {
+              "key": "data-inicial",
+              "value": "2026-06-17"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "contagemPorFuncao",
+      "request": {
+        "auth": {
+          "type": "noauth"
+        },
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{host}}/api/v1/contagem-funcao?data-inicial=2026-06-17",
+          "host": [
+            "{{host}}"
+          ],
+          "path": [
+            "api",
+            "v1",
+            "contagem-funcao"
+          ],
+          "query": [
+            {
+              "key": "data-inicial",
+              "value": "2026-06-17"
+            }
+          ]
+        }
+      },
+      "response": []
+    }
+  ]
+}

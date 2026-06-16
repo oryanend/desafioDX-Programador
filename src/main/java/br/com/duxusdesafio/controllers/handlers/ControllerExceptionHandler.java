@@ -1,5 +1,6 @@
 package br.com.duxusdesafio.controllers.handlers;
 
+import br.com.duxusdesafio.service.exceptions.InvalidRequest;
 import br.com.duxusdesafio.service.exceptions.ResourceNotFoundException;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -28,6 +29,19 @@ public class ControllerExceptionHandler implements AuthenticationFailureHandler 
         err.setTimestamp(Instant.now());
         err.setStatus(status.value());
         err.setError("Resource not found");
+        err.setMessage(e.getMessage());
+        err.setPath(request.getRequestURI());
+        return ResponseEntity.status(status).body(err);
+    }
+
+    @ExceptionHandler(InvalidRequest.class)
+    public ResponseEntity<StandardError> invalidRequest(
+            InvalidRequest e, HttpServletRequest request) {
+        HttpStatus status = HttpStatus.BAD_REQUEST;
+        StandardError err = new StandardError();
+        err.setTimestamp(Instant.now());
+        err.setStatus(status.value());
+        err.setError("Invalid request");
         err.setMessage(e.getMessage());
         err.setPath(request.getRequestURI());
         return ResponseEntity.status(status).body(err);

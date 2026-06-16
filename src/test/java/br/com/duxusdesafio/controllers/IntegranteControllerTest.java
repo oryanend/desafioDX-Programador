@@ -38,6 +38,9 @@ public class IntegranteControllerTest {
         validIntegranteDTO = new IntegranteDTO(validIntegranteNome, validIntegranteFuncao);
     }
 
+    /**
+     * Deve cadastrar um integrante e retornar HTTP 201 quando os dados forem válidos.
+     */
     @Test
     public void postIntegranteShouldReturnSuccessfulWhenIsValid() throws Exception {
         String jsonBody = objectMapper.writeValueAsString(validIntegranteDTO);

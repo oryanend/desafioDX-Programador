@@ -22,6 +22,7 @@ import java.util.Map;
 public class ApiController {
     @Autowired private ApiProcessingService service;
 
+    /** Consulta o time de uma determinada data. */
     @GetMapping("/time-da-data")
     public ResponseEntity<TimeDaDataDTO> timeDaData(
             @RequestParam("data")
@@ -30,6 +31,7 @@ public class ApiController {
         return ResponseEntity.ok().body(service.timeDaData(data));
     }
 
+    /** Consulta o integrante mais utilizado no período. */
     @GetMapping("/integrante-mais-usado")
     public ResponseEntity<IntegranteDTO> integranteMaisUsado(
             @RequestParam(required = false, name = "data-inicial")
@@ -40,6 +42,7 @@ public class ApiController {
         return ResponseEntity.ok().body(service.integranteMaisUsado(dataInicial, dataFinal));
     }
 
+    /** Consulta os integrantes do time mais recorrente. */
     @GetMapping("/integrantes-time-mais-recorrente")
     public ResponseEntity<List<String>> integrantesDoTimeMaisRecorrente(
             @RequestParam(required = false, name = "data-inicial")
@@ -50,6 +53,7 @@ public class ApiController {
         return ResponseEntity.ok().body(service.integrantesDoTimeMaisRecorrente(dataInicial, dataFinal));
     }
 
+    /** Consulta a função mais recorrente no período. */
     @GetMapping("/funcao-mais-recorrente")
     public ResponseEntity<FuncaoMaisRecorrenteDTO> funcaoMaisRecorrente(
             @RequestParam(required = false, name = "data-inicial")
@@ -60,6 +64,7 @@ public class ApiController {
         return ResponseEntity.ok().body(service.funcaoMaisRecorrente(dataInicial, dataFinal));
     }
 
+    /** Consulta o clube mais recorrente no período. */
     @GetMapping("/clube-mais-recorrente")
     public ResponseEntity<ClubeMaisRecorrenteDTO> clubeMaisRecorrente(
             @RequestParam(required = false, name = "data-inicial")
@@ -70,6 +75,7 @@ public class ApiController {
         return ResponseEntity.ok().body(service.clubeMaisRecorrente(dataInicial, dataFinal));
     }
 
+    /** Consulta a contagem de clubes no período. */
     @GetMapping("/contagem-clubes")
     public ResponseEntity<Map<String, Long>> contagemDeClubesNoPeriodo(
             @RequestParam(required = false, name = "data-inicial")
@@ -80,6 +86,7 @@ public class ApiController {
         return ResponseEntity.ok().body(service.contagemDeClubesNoPeriodo(dataInicial, dataFinal));
     }
 
+    /** Consulta a contagem de funções no período. */
     @GetMapping("/contagem-funcao")
     public ResponseEntity<Map<String, Long>> contagemPorFuncao(
             @RequestParam(required = false, name = "data-inicial")

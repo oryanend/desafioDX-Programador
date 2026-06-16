@@ -44,4 +44,14 @@ public class IntegranteDTO {
     public void setFuncao(String funcao) {
         this.funcao = funcao;
     }
+
+    @Override
+    public String toString() {
+        return String.format(
+                "Id: %d%nNome: %s%nFunção: %s",
+                id,
+                nome,
+                funcao
+        );
+    }
 }
