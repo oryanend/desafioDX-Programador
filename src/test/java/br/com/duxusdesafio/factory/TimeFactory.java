@@ -9,11 +9,14 @@ import net.datafaker.Faker;
 import java.util.Arrays;
 
 import static br.com.duxusdesafio.factory.IntegranteFactory.createIntegrante;
-
+/**
+ * Factory responsável por criar objetos Time e TimeDaDataDTO para testes.
+ */
 @SuppressWarnings("removal")
 public class TimeFactory {
     private static final Faker faker = new Faker();
 
+    /**Cria um time com dados fictícios.*/
     public static Time createTime() {
         Time time = new Time();
         time.setNomeDoClube(faker.team().name());
@@ -21,6 +24,7 @@ public class TimeFactory {
         return time;
     }
 
+    /** Cria um DTO contendo um time e sua composição para cenários de teste. */
     public static TimeDaDataDTO createTimeDaDataDTO() {
         Time time = createTime();
 

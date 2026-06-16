@@ -58,6 +58,9 @@ public class TimeControllerTest {
         validTimeDTO = new TimeDTO(validNomeDoClube, validLocalDate, validIntegrantesIds);
     }
 
+    /**
+     * Deve cadastrar um time e retornar os dados persistidos quando a requisição for válida.
+     */
     @Test
     public void postTimeShouldReturnSuccessfulWhenIsValid() throws Exception {
         String jsonBody = objectMapper.writeValueAsString(validTimeDTO);

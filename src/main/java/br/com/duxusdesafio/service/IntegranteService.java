@@ -7,6 +7,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+/**
+ * Cadastra um novo integrante.
+ */
 @Service
 public class IntegranteService {
     @Autowired private IntegranteRepository integranteRepository;
@@ -21,6 +24,7 @@ public class IntegranteService {
         return new IntegranteDTO(entity);
     }
 
+    /** Copia os dados do DTO para a entidade. */
     private void copyDtoToEntity(IntegranteDTO dto, Integrante entity) {
         entity.setNome(dto.getNome());
         entity.setFuncao(dto.getFuncao());

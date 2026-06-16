@@ -12,6 +12,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+/**
+ * Cadastra um novo time e associa os integrantes informados à sua composição.
+ *
+ * @param dto dados do time e lista de IDs dos integrantes
+ * @return time cadastrado com o ID gerado
+ */
 @Service
 public class TimeService {
     @Autowired private TimeRepository timeRepository;
