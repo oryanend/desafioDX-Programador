@@ -7,7 +7,10 @@
   "scripts": {
     "prepare": "husky",
     "commit": "cz",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "services:up": "docker-compose -f docker-compose.yml up -d --build",
+    "services:stop": "docker-compose -f docker-compose.yml stop",
+    "services:down": "docker-compose -f docker-compose.yml down -v"
   },
   "dependencies": {
     "commitizen": "^4.3.2",
