@@ -17,4 +17,9 @@ public class ClubeMaisRecorrenteDTO {
     public void setNomeDoClube(String nomeDoClube) {
         this.nomeDoClube = nomeDoClube;
     }
+
+    @Override
+    public String toString() {
+        return "Clube Mais Recorrente: " + nomeDoClube;
+    }
 }
