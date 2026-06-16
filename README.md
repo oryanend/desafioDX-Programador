@@ -1,142 +1,174 @@
-
-# Desafio de Desenvolvimento
-
-O objetivo deste desafio é obter uma ideia das habilidades que o candidato possui, da organização de tempo e também do código.
-
-## Considerações Importantes – Por favor, leia com atenção:
-
-- O desafio já tem códigos pré prontos para você completar as funcionalidades. Não é preciso reinventar a roda! Use o que existe!
-
-- Use seu tempo de forma inteligente: Uma solução simples primeiro e depois avance.
-
-- Comentários sempre são bem-vindos em métodos ou estruturas mais complexas.
-
-- Parece não intuitivo, mas deixe as telas por último, pense na estrutura dos dados e nos métodos de gravação e exportação primeiro.
-
-- Utilize os testes unitários já existentes e crie novos também, isso é importante. Não existe necessidade de 100% de cobertura, mas use-os para experimentar e validar sua solução – **é muito importante que os testes já existentes estejam passando após a sua implementação!**
-
-- Faça commits frequentes, assim podemos ver a evolução da sua solução.
-
-- Sobre banco de dados, você pode usar qualquer um que esteja acostumado, inclusive em memória, se preferir. Aqui utilizamos, comumente: PostgreSQL, Microsoft SQL Server, Oracle DB, MySQL e, especialmente para testes, HSQLDB. 
-
-- Entregue tudo o que conseguir fazer, indiferente de estar completo ou não.
-
-- Durante o período de teste, fique à vontade para enviar dúvidas ao recrutador.
-
-- Ao final, deixamos alguns links que podem ser úteis para consulta, mas você pode consultar qualquer material, à vontade.
-
-- Nos envie, ao final, uma descrição com detalhes de como podemos testar a sua implementação.
-
-## O que você deve implementar:
-
-Imagine que você quer fazer um sistema de escalação de times. Toda semana você vai montar um time vencedor. 
-
-Não importa se é Esporte tradicional ou eSports.
-
-Exemplos de Esporte tradicional : Futebol, Basquete.
-
-Exemplos de eSports : Counter Strike, Valorant, Free Fire, League of Legends, APEX.
-
-Sua tarefa é construir a melhor solução no tempo combinado, considerando os requisitos que estarão descritos abaixo.
-
-Você pode usar a criatividade pois não existe uma solução definitiva para o desafio.
-
-Abaixo, mais detalhes:
-
-## Estrutura dos Dados
-
-### Tabela de "Integrante" :
-
-- Id
-- Nome
-- Função
-
-### Tabela de Time:
-
-- Id
-- Nome do Clube
-- Data
-
-### Tabela de ComposicaoTime:
-
-- Id
-- Id_Time  (foreign key tabela Time)
-- Id_Integrante  (foreign key tabela Integrante)
-
-## Funcionalidades Principais
-
-### 1) Tratamento de dados – PASSO MAIS IMPORTANTE DO DESAFIO, foque nessa etapa primeiro.
-
-Esse passo é o mais importante no teste porque gostaríamos de medir a sua capacidade de lidar com estruturas de dados. 
-
-Já existe um service criado no projeto (ApiService), com métodos para serem implementados, e testes unitários para eles. Utilize-os!
-
-Sendo possível, crie novos testes unitários, aumente os cases dos testes atuais, amplie essa cobertura de testes, pois é muito importante garantir que o código esteja atendendo corretamente o que se pede.
-
-No quadro, alguns detalhes sobre os métodos:
-
-| Método  | Parâmetros | Descrição |
-|--|--|--|
-| TimeDaData | Data, Lista de todos os Times                              | Vai retornar um Time, com a composição do time daquela data                                 |
-| IntegranteMaisUsado | Data inicial e Data final (podem ser null), Lista de todos os Times | Vai retornar o integrante que tiver presente na maior quantidade de times dentro do período |
-| IntegrantesDoTimeMaisRecorrente | Data inicial e Data final (podem ser null), Lista de todos os Times | Vai retornar uma lista com os nomes dos integrantes do time mais recorrente dentro do período    |
-| FuncaoMaisRecorrente | Data inicial e Data final (podem ser null), Lista de todos os Times | Vai retornar a função mais recorrente nos times dentro do período                                |
-| ClubeMaisRecorrente | Data inicial e Data final (podem ser null), Lista de todos os Times |Vai retornar o nome do Clube mais comum dentro do período                      |
-| ContagemDeClubesNoPeriodo | Data inicial e Data final (podem ser null), Lista de todos os Times | Vai retornar o número (quantidade) de aparições de cada Clube participante no período                           |
-| ContagemPorFuncao | Data inicial e Data final (podem ser null), Lista de todos os Times | Vai retornar o número (quantidade) de Funções dentro do período                             |
-
-## Funcionalidades Extras
-### 2) API de Cadastro
-
-Lembrando: a prioridade é a funcionalidade correta, não as telas. 
-
-#### Cadastro de Integrantes
-
-Fazer um cadastro de integrantes para os times.
-
-#### Cadastro de Times
-
-Fazer um cadastro de times onde não importa muito a quantidade de integrantes. 
-
-Para cadastrar um time para uma determinada semana basta escolher os personagens/integrantes que farão parte dele.
+<h1 align="center">Desafio da Élin Duxus</h1>
+<div align="center">
+  <img src="https://cdn.prod.website-files.com/6700259a54cba94892d36fa8/673b50467fa8d3d482714f04_ElinDuxus.png" alt="Élin Duxus Logo" style="height: 8rem;">
+</div>
+<p align='center'>
+    <img src="https://img.shields.io/badge/Spring_Boot-6DB33F?style=for-the-badge&logo=spring-boot&logoColor=white"/>
+    <img src="https://img.shields.io/badge/java-%23ED8B00.svg?style=for-the-badge&logo=openjdk&logoColor=white"/>
+    <img src="https://img.shields.io/badge/PostgreSQL-316192?style=for-the-badge&logo=postgresql&logoColor=white"/>
+</p>
 
 
-### 3) API para processamento de Dados
+## 🔍 Visão Geral
 
-Seu sistema vai processar as informações do banco de dados e vai exportá-las através de endpoints.
+### O Desafio
 
-Você deve usar os selects para trazer todos os dados, mas processe eles na linguagem, através dos métodos implementados no passo 1.
+A DX propõe a construção de um sistema de escalação de times, esportes
+tradicionais ou eSports. Toda semana um novo time é montado a partir de
+um elenco de integrantes cadastrados. O sistema precisa guardar essas
+composições e responder perguntas sobre elas: quem apareceu mais? Qual
+clube dominou o período? Qual função foi mais escalada?
 
-| Endpoint  | Parâmetros |
-|--|--|
-| TimeDaData | Data | 
-| IntegrantesDoTimeMaisRecorrente | Data inicial e Data final (podem ser null) |
-| IntegranteMaisUsado | Data inicial e Data final (podem ser null) |
-| FuncaoMaisRecorrente | Data inicial e Data final (podem ser null) |
-| ClubeMaisRecorrente | Data inicial e Data final (podem ser null) |
-| ContagemDeClubesNoPeriodo | Data inicial e Data final (podem ser null) |
-| ContagemPorFuncao | Data inicial e Data final (podem ser null) |
+O desafio deixa claro onde está o peso da avaliação: lógica de
+processamento de dados primeiro, API depois, telas por último.
 
-Exemplos de Resultados esperados:
+### O que foi entregue
 
-TimeDaData
-``` 
+Todas as funcionalidades do núcleo do desafio estão implementadas e testadas. Sendo elas:
+* **Funcionalidade 1 (Principal) – Tratamento de Dados:** implementação dos 7 métodos de processamento no `ApiService`, utilizando Java Streams, com cobertura de testes unitários para validação das regras de negócio.
+* **Funcionalidade 2 (Extra) – API de Cadastro:** desenvolvimento dos endpoints de CRUD para gerenciamento de integrantes e times.
+* **Funcionalidade 3 (Extra) – API para Processamento de Dados:** disponibilização dos 7 métodos de processamento por meio de endpoints REST.
+* **Suporte à Persistência:** configuração de banco de dados H2 em memória para execução e testes da aplicação.
+* **Containerização:** configuração do ambiente com Docker Compose, permitindo a inicialização da aplicação através do comando `docker compose up`.
+
+
+
+## Índice
+- 🔍 [Visão Geral](#-visão-geral)
+- ⚙️ [Endpoints](#-endpoints)
+- 📄 [Pré-requisitos](#-Pré-requisitos)
+- 🔧 [Como executar?](#-como-executar)
+- 🛠️ [Testando API com Postman](#-testando-api-com-postman)
+- 💻 [Tecnologias utilizadas](#-tecnologias-utilizadas)
+- 👥 [Autor](#-autor)
+
+## ⚙️ Endpoints
+Os endpoints da API deste projeto são diversos, por isso estão organizados por seus respectivos controllers:
+
+### **`IntegranteController`**
+
+Responsável pelo cadastro de integrantes que poderão compor os times.
+
+| Endpoint                       | Visão geral                                           |
+| ------------------------------ | ----------------------------------------------------- |
+| **POST** `/api/v1/integrantes` | Cadastra um novo integrante informando nome e função. |
+
+**Exemplo de requisição**
+
+```json
 {
-  "data": 2021-01-15,
+  "nome": "Bangalore",
+  "funcao": "ATACANTE"
+}
+```
+
+---
+
+### **`TimeController`**
+
+Responsável pelo cadastro de times e suas respectivas composições.
+
+| Endpoint                 | Visão geral                                                               |
+| ------------------------ | ------------------------------------------------------------------------- |
+| **POST** `/api/v1/times` | Cadastra um novo time informando clube, data e integrantes participantes. |
+
+**Exemplo de requisição**
+
+```json
+{
+  "nome": "Falcons",
+  "data": "2021-01-15",
+  "integrantes": [1, 2, 3]
+}
+```
+
+---
+
+### **`ApiController`**
+
+Responsável pelo processamento dos dados dos times cadastrados, retornando estatísticas e consultas solicitadas pelo desafio.
+
+| Endpoint                                           | Visão geral                                                              |
+| -------------------------------------------------- | ------------------------------------------------------------------------ |
+| **GET** `/api/v1/time-da-data?data=yyyy-MM-dd`     | Retorna o time e sua composição para a data informada.                   |
+| **GET** `/api/v1/integrante-mais-usado`            | Retorna o integrante presente em mais times dentro do período informado. |
+| **GET** `/api/v1/integrantes-time-mais-recorrente` | Retorna os integrantes do time que mais se repetiu no período.           |
+| **GET** `/api/v1/funcao-mais-recorrente`           | Retorna a função mais recorrente nos times dentro do período.            |
+| **GET** `/api/v1/clube-mais-recorrente`            | Retorna o clube que mais apareceu no período.                            |
+| **GET** `/api/v1/contagem-clubes`                  | Retorna a quantidade de aparições de cada clube no período.              |
+| **GET** `/api/v1/contagem-funcao`                  | Retorna a quantidade de ocorrências de cada função no período.           |
+
+#### Parâmetros opcionais de período
+
+Os endpoints abaixo aceitam os parâmetros:
+
+| Parâmetro      | Tipo                | Obrigatório |
+| -------------- | ------------------- | ----------- |
+| `data-inicial` | Date (`yyyy-MM-dd`) | Não         |
+| `data-final`   | Date (`yyyy-MM-dd`) | Não         |
+
+Endpoints que utilizam esses parâmetros:
+
+* `/integrante-mais-usado`
+* `/integrantes-time-mais-recorrente`
+* `/funcao-mais-recorrente`
+* `/clube-mais-recorrente`
+* `/contagem-clubes`
+* `/contagem-funcao`
+
+**Exemplo**
+
+```http
+GET /api/v1/clube-mais-recorrente?data-inicial=2021-01-01&data-final=2021-12-31
+```
+
+---
+
+### Exemplos de respostas
+
+#### **GET** `/api/v1/time-da-data?data=2021-01-15`
+
+```json
+{
+  "data": "2021-01-15",
   "clube": "Falcons",
-  "integrantes": [ "Bangalore", "BloodHound", "Crypto" ]
+  "integrantes": [
+    "Bangalore",
+    "BloodHound",
+    "Crypto"
+  ]
 }
 ```
 
-FuncaoMaisRecorrente
-``` 
+#### **GET** `/api/v1/integrante-mais-usado`
+
+```json
 {
-  "Função" : "Meia"
+  "id": 1,
+  "nome": "Bangalore",
+  "funcao": "ATACANTE"
 }
 ```
 
-ContagemDeClubesNoPeriodo
-``` 
+#### **GET** `/api/v1/funcao-mais-recorrente`
+
+```json
+{
+  "funcao": "MEIA"
+}
+```
+
+#### **GET** `/api/v1/clube-mais-recorrente`
+
+```json
+{
+  "clube": "Falcons"
+}
+```
+
+#### **GET** `/api/v1/contagem-clubes`
+
+```json
 {
   "Falcons": 5,
   "FURIA": 2,
@@ -144,29 +176,123 @@ ContagemDeClubesNoPeriodo
 }
 ```
 
+#### **GET** `/api/v1/contagem-funcao`
 
-### 4) Telas
+```json
+{
+  "ATACANTE": 10,
+  "MEIA": 8,
+  "GOLEIRO": 4,
+  "VOLANTE": 3
+}
+```
 
-Conforme já foi dito as telas de cadastro tem prioridade menor do que o funcionamento da API.
 
-Você pode fazer as telas da maneira mais simples possível e usar qualquer framework que facilite o desenvolvimento.
+## 📄 Pré-requisitos
+Para rodar a aplicação é necessário ter as seguintes ferramentas instaladas:
 
-- Tela de Inserção de Integrantes
-    - Um formulário com os campos é suficiente
-- Tela de Montagem de Times pode ser feita de diversas maneiras, algumas sugestões:
-    - Fazer uma listagem e colocar um checkbox ao lado de cada integrante
-    - Fazer um "transfer" usando dois "selects" de html
-    - Usar um componente de jquery ( https://www.jqueryscript.net/blog/best-multiple-select.html )
+| Tecnologia | Versão | Download |
+|---|---|---|
+| Java (JDK) | 8 | https://adoptium.net/temurin/releases/?version=8 |
+| Maven | 3.6+ | https://maven.apache.org/download.cgi |
+| Node.js | 18+ | https://nodejs.org/en/download |
+| Docker Desktop | 20.10+ | https://www.docker.com/products/docker-desktop |
+| Postman | 10+ | https://www.postman.com/downloads/ |
 
-Não se sinta obrigado a utilizar algo dessas sugestões, fique à vontade para utilizar o que tiver mais domínio ou preferência.
+> - **Maven é opcional**. O projeto inclui o Maven Wrapper (`./mvnw`),
+> que baixa a versão correta automaticamente na primeira execução.
+>
+> - **Node.js** é necessário para o setup dos git hooks e para usar
+> os atalhos de Docker via npm.
+>
+> - **Postman** é recomendado para testar os endpoints da API, mas pode ser substituído por qualquer cliente HTTP de sua preferência.
 
-O importante é a tela estar funcional e a beleza não será avaliada.
+Para o perfil de teste, o banco de dados padrão é H2 em memória. Para usar o PostgreSQL, inicie o container do docker com `npm run services:up`.
 
-## Alguns links úteis para consulta
+## 🔧 Como executar?
 
-- https://www.baeldung.com/java-collections
-- https://www.baeldung.com/java-8-streams-introduction
-- https://pt.linkedin.com/pulse/tdd-com-java-junit-e-mockito-tiago-perroni
-- https://www.devmedia.com.br/rest-tutorial/28912
-- https://www.baeldung.com/rest-with-spring-series
-- https://www.baeldung.com/jackson-vs-gson
+Siga os passos abaixo para executar a aplicação localmente.
+
+### 1. Clone o repositório
+
+```bash
+git clone git@github.com:oryanend/desafioDX-Programador.git
+```
+
+### 2. Importe o projeto na IDE
+
+- Abra a IDE de sua preferência (recomendado: IntelliJ IDEA).
+- Selecione **Open** e escolha a pasta do projeto clonado.
+- Aguarde a indexação e a configuração automática do projeto pelo Maven.
+
+### 3. Verifique as dependências
+
+- Certifique-se de que todas as dependências Maven foram baixadas corretamente.
+- Caso necessário, execute um **Reload Maven Project**.
+
+## Opção 1 - Executar com Docker (Recomendado)
+
+Esta é a forma mais simples de executar o projeto.
+
+- Abra o Docker Desktop e certifique-se de que o Docker está em execução.
+- Navegue até a raiz do projeto.
+- Execute o comando:
+
+```bash
+npm run services:up
+```
+> **Observações** 
+> - Caso você queira pausar os serviços mantendo o container, utilize o comando `npm run services:stop`.
+> - Caso pausar os serviços e remover os containers, utilize `npm run services:down`.
+
+## Opção 2 - Executar sem Docker
+
+Caso prefira executar a aplicação diretamente pela IDE:
+
+- Certifique-se de possuir, pelo menos, o **Java 8** instalado.
+- Execute a classe principal da aplicação:
+
+```java
+DuxusDesafioApplication
+```
+
+Ou utilize o Maven:
+
+```bash
+./mvnw spring-boot:run
+```
+
+> O projeto utiliza banco de dados H2 em memória por padrão, portanto não é necessária nenhuma configuração adicional de banco de dados.
+
+### Acessando a API
+
+Após a inicialização, a API estará disponível para consumo.
+
+Ferramentas recomendadas para testes:
+
+- **Postman (Recomendado)**
+- Insomnia
+- cURL
+
+Os endpoints contemplam tanto as operações de cadastro (times e integrantes) quanto as funcionalidades de processamento de dados.
+
+## 🛠️ Testando API com Postman
+Para facilitar o teste dos endpoints da API, disponibilizei uma coleção e um ambiente (environment) no Postman contendo todas as requisições disponíveis. Siga os passos abaixo para importar a coleção e começar a testar:
+1. **Importar a Coleção e o Ambiente:**
+   - Baixe os arquivos `DuxusDesafio.postman_collection.json` e `DuxusDesafio.postman_environment.json` disponíveis dentro do diretório `docs/postman` do projeto.
+   - Abra o Postman e clique no botão "File" localizado no canto superior esquerdo da interface. Em seguida, selecione a opção "Import" e depois localize os dois arquivos e selecione-os
+
+2. **Teste os Endpoints:**
+   - Agora que a coleção foi importada com sucesso, você verá todas as requisições listadas no painel esquerdo do Postman. Basta selecionar a requisição desejada e clicar em "Send" para testá-la.
+   - Na parte superior direita do Postman, você verá um dropdown com a lista de environments. Selecione o environment recém-importado.
+
+**Observação:** Ao selecionar a coleção importada no painel esquerdo do Postman, você encontrará informações adicionais, incluindo um guia de uso, instruções para realizar as requisições e uma sugestão de ordem recomendada para execução dos testes.
+
+## 💻 Tecnologias utilizadas
+
+![Spring Boot](https://img.shields.io/badge/Spring_Boot-6DB33F?style=for-the-badge&logo=spring-boot&logoColor=white) ![Java](https://img.shields.io/badge/java-%23ED8B00.svg?style=for-the-badge&logo=openjdk&logoColor=white) ![NPM](https://img.shields.io/badge/npm-CB3837?style=for-the-badge&logo=npm&logoColor=white) ![Apache Maven](https://img.shields.io/badge/Apache%20Maven-C71A36?style=for-the-badge&logo=Apache%20Maven&logoColor=white) ![Docker](https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white) ![Postgresql](https://img.shields.io/badge/PostgreSQL-316192?style=for-the-badge&logo=postgresql&logoColor=white) ![GitHub Actions](https://img.shields.io/badge/GitHub%20Actions-2088FF?style=for-the-badge&logo=github-actions&logoColor=white) ![CommitLint](https://img.shields.io/badge/commitlint-white?style=for-the-badge&logo=commitlint&logoColor=3c3c43) ![IntelliJ IDEA](https://img.shields.io/badge/IntelliJIDEA-000000.svg?style=for-the-badge&logo=intellij-idea&logoColor=white)
+
+# 👥 Autor
+
+| [<img src="https://avatars.githubusercontent.com/u/135620793?v=4" width=115><br><sub>Ryan Oliveira</sub>](https://github.com/oryanend) |
+| :---: |
