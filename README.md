@@ -24,19 +24,30 @@ processamento de dados primeiro, API depois, telas por último.
 
 ### O que foi entregue
 
-Todas as funcionalidades do núcleo do desafio estão implementadas e testadas. Sendo elas:
-* **Funcionalidade 1 (Principal) – Tratamento de Dados:** implementação dos 7 métodos de processamento no `ApiService`, utilizando Java Streams, com cobertura de testes unitários para validação das regras de negócio.
-* **Funcionalidade 2 (Extra) – API de Cadastro:** desenvolvimento dos endpoints de CRUD para gerenciamento de integrantes e times.
-* **Funcionalidade 3 (Extra) – API para Processamento de Dados:** disponibilização dos 7 métodos de processamento por meio de endpoints REST.
-* **Suporte à Persistência:** configuração de banco de dados H2 em memória para execução e testes da aplicação.
-* **Containerização:** configuração do ambiente com Docker Compose, permitindo a inicialização da aplicação através do comando `docker compose up`.
+Todas as funcionalidades do núcleo do desafio foram implementadas e validadas por testes. As entregas contemplam:
+
+* **Funcionalidade 1 (Principal) – Tratamento de Dados:** implementação dos 7 métodos de processamento no `ApiService`, utilizando Java Streams, com testes unitários cobrindo os principais cenários e regras de negócio.
+
+* **Funcionalidade 2 (Extra) – API de Cadastro:** desenvolvimento dos endpoints para cadastro de integrantes e times, incluindo a associação entre times e seus integrantes.
+
+* **Funcionalidade 3 (Extra) – API para Processamento de Dados:** disponibilização dos 7 métodos de processamento por meio de endpoints REST, permitindo a consulta dos dados processados diretamente pela API.
+
+* **Funcionalidade 4 (Extra) – Interface Web com Thymeleaf:** implementação de telas para cadastro de integrantes, montagem de times e consulta dos processamentos de dados. As telas foram desenvolvidas com Thymeleaf e Bootstrap, permitindo utilizar as principais funcionalidades da aplicação através de uma interface gráfica simples e funcional.
+
+* **Suporte à Persistência:** configuração de banco de dados H2 em memória para execução local e realização de testes.
+
+* **Containerização:** configuração do ambiente com Docker Compose, permitindo a inicialização completa da aplicação por meio do comando `docker compose up`.
+
+* **Documentação e Coleção Postman:** disponibilização de documentação de uso e coleção Postman para facilitar os testes dos endpoints da aplicação.
+
 
 
 
 ## Índice
 - 🔍 [Visão Geral](#-visão-geral)
 - ⚙️ [Endpoints](#-endpoints)
-- 📄 [Pré-requisitos](#-Pré-requisitos)
+- 🎨 [Telas da Aplicação](#-telas)
+- 📄 [Pré-requisitos](#-requisitos)
 - 🔧 [Como executar?](#-como-executar)
 - 🛠️ [Testando API com Postman](#-testando-api-com-postman)
 - 💻 [Tecnologias utilizadas](#-tecnologias-utilizadas)
@@ -187,8 +198,51 @@ GET /api/v1/clube-mais-recorrente?data-inicial=2021-01-01&data-final=2021-12-31
 }
 ```
 
+## 🎨 Telas
 
-## 📄 Pré-requisitos
+Como funcionalidade adicional, foi desenvolvida uma interface web utilizando **Thymeleaf** e **Bootstrap**, permitindo utilizar as principais funcionalidades da aplicação através do navegador de forma simples e intuitiva.
+
+As seguintes telas estão disponíveis nos seguintes caminhos:
+
+### `/telas/integrantes`
+
+Tela responsável pelo cadastro de integrantes. Nela é possível informar o nome e a função de cada participante, além de visualizar todos os integrantes já cadastrados no sistema.
+
+**Exemplo da tela:**
+
+<img src="docs/telas/telas-integrante.png">
+
+---
+
+### `/telas/times`
+
+Tela utilizada para a montagem dos times. Permite informar o nome do clube, a data da escalação e selecionar os integrantes que farão parte da composição do time.
+
+**Exemplo da tela:**
+
+<img src="docs/telas/telas-time.png">
+
+---
+
+### `/telas/processamento`
+
+Tela destinada à execução das consultas de processamento de dados previstas no desafio. Através dela é possível selecionar uma das análises disponíveis, informar datas quando necessário e visualizar o resultado diretamente na interface.
+
+As consultas disponíveis são:
+
+* Time da Data
+* Integrante Mais Usado
+* Integrantes do Time Mais Recorrente
+* Função Mais Recorrente
+* Clube Mais Recorrente
+* Contagem de Clubes no Período
+* Contagem por Função
+
+**Exemplo da tela:**
+
+<img src="docs/telas/telas-processamento.png">
+
+## 📄 Requisitos
 Para rodar a aplicação é necessário ter as seguintes ferramentas instaladas:
 
 | Tecnologia | Versão | Download |
